@@ -63,7 +63,7 @@ class GeminiService {
    * @param {Object} options - { history, jsonMode, retries, timeoutMs }
    */
   async generateAIResponse(prompt, systemInstruction = null, options = {}) {
-    const { history = null, jsonMode = false, retries = 3, timeoutMs = 30000 } = options;
+    const { history = null, jsonMode = false, retries = process.env.NODE_ENV === 'test' ? 0 : 3, timeoutMs = 30000 } = options;
     
     if (!this.genAI) throw this._handleError(new Error('API_KEY_INVALID'));
 

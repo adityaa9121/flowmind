@@ -36,6 +36,9 @@ app.use((req, res, next) => {
   });
   next();
 });
+// Health Check Routes (For Uptime Kuma / Render)
+app.get('/', (req, res) => res.status(200).json({ status: 'ok', service: 'FlowMind API' }));
+app.get('/health', (req, res) => res.status(200).json({ status: 'ok', service: 'FlowMind API' }));
 
 // Routes
 app.use('/api/users', require('./routes/users'));

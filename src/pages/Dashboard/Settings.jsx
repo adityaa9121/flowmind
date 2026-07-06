@@ -5,6 +5,7 @@ import { Bell, Loader2, Check, Mail, FileText } from 'lucide-react';
 import styles from './DashboardPages.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
+import { API_BASE_URL } from '../../config/api';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -33,7 +34,7 @@ const Settings = () => {
 
     try {
       const token = await currentUser.getIdToken();
-      const res = await fetch('\/api/users/preferences', {
+      const res = await fetch(`${API_BASE_URL}/api/users/preferences`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

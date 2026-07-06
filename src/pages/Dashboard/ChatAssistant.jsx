@@ -8,6 +8,7 @@ import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useAuth } from '../../context/AuthContext';
 import RateLimitErrorCard from '../../components/RateLimitErrorCard/RateLimitErrorCard';
 import styles from './ChatAssistant.module.css';
+import { API_BASE_URL } from '../../config/api';
 
 const ChatAssistant = () => {
   const { currentUser } = useAuth();
@@ -73,7 +74,7 @@ const ChatAssistant = () => {
   const fetchChats = async () => {
     try {
       const headers = await getHeaders();
-      const res = await fetch('\/api/chat', { headers });
+      const res = await fetch(`${API_BASE_URL}/api/chat`, { headers });
       const data = await res.json();
       if (res.ok) {
         setChats(data);
@@ -107,7 +108,7 @@ const ChatAssistant = () => {
     }
     try {
       const headers = await getHeaders();
-      const res = await fetch(`\/api/chat/${chatId}`, { headers });
+      const res = await fetch(`${API_BASE_URL}/api/chat/${chatId}`, { headers });
       const data = await res.json();
       if (res.ok) {
         setMessages(data.messages || []);
@@ -120,7 +121,7 @@ const ChatAssistant = () => {
   const createNewChat = async () => {
     try {
       const headers = await getHeaders();
-      const res = await fetch('\/api/chat', { 
+      const res = await fetch(`${API_BASE_URL}/api/chat`, { 
         method: 'POST', 
         headers,
         body: JSON.stringify({ title: 'New Conversation' })
@@ -142,7 +143,7 @@ const ChatAssistant = () => {
     if (!window.confirm('Delete this chat?')) return;
     try {
       const headers = await getHeaders();
-      const res = await fetch(`\/api/chat/${chatId}`, { 
+      const res = await fetch(`${API_BASE_URL}/api/chat/${chatId}`, { 
         method: 'DELETE', 
         headers 
       });
@@ -162,7 +163,7 @@ const ChatAssistant = () => {
     e.stopPropagation();
     try {
       const headers = await getHeaders();
-      const res = await fetch(`\/api/chat/${chatId}`, { 
+      const res = await fetch(`${API_BASE_URL}/api/chat/${chatId}`, { 
         method: 'PUT', 
         headers,
         body: JSON.stringify({ isPinned: !currentStatus })
@@ -191,7 +192,7 @@ const ChatAssistant = () => {
     }
     try {
       const headers = await getHeaders();
-      const res = await fetch(`\/api/chat/${chatId}`, { 
+      const res = await fetch(`${API_BASE_URL}/api/chat/${chatId}`, { 
         method: 'PUT', 
         headers,
         body: JSON.stringify({ title: editTitle })
@@ -276,7 +277,7 @@ const ChatAssistant = () => {
       try {
         const headers = await getHeaders();
         // Since backend doesn't have an explicit clear route right now, we can just delete the whole chat and create a new one, or leave it as client side for now. Let's just create a new one to simulate clearing.
-        await fetch(`\/api/chat/${currentChatId}`, { method: 'DELETE', headers });
+        await fetch(`${API_BASE_URL}/api/chat/${currentChatId}`, { method: 'DELETE', headers });
         setChats(chats.filter(c => c._id !== currentChatId));
         setCurrentChatId(null);
         setMessages([]);
@@ -301,7 +302,7 @@ const ChatAssistant = () => {
 
       // Pre-flight validation: If no chat exists, explicitly create one first.
       if (!targetChatId) {
-        const createRes = await fetch('\/api/chat', { 
+        const createRes = await fetch(`${API_BASE_URL}/api/chat`, { 
           method: 'POST', 
           headers,
           body: JSON.stringify({ 
@@ -329,7 +330,7 @@ const ChatAssistant = () => {
       setInput('');
 
       // Send the actual message using the mathematically guaranteed valid targetChatId
-      const response = await fetch(`\/api/chat/${targetChatId}/message`, {
+      const response = await fetch(`${API_BASE_URL}/api/chat/${targetChatId}/message`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ message: text })

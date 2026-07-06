@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import styles from './DashboardPages.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { motion } from 'framer-motion';
+import { API_BASE_URL } from '../../config/api';
 
 const itemVariants = {
   hidden: { opacity: 0, y: 15 },
@@ -45,8 +46,8 @@ const Profile = () => {
         };
 
         const [statsRes, activityRes] = await Promise.all([
-          fetch('\/api/users/stats', { headers }),
-          fetch(`\/api/activities/user/${currentUser.uid}`, { headers })
+          fetch(`${API_BASE_URL}/api/users/stats`, { headers }),
+          fetch(`${API_BASE_URL}/api/activities/user/${currentUser.uid}`, { headers })
         ]);
 
         if (statsRes.ok) {

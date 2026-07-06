@@ -5,6 +5,7 @@ import { Book, MessageCircle, ExternalLink, X, Loader2, Check } from 'lucide-rea
 import styles from './DashboardPages.module.css';
 import { useAuth } from '../../context/AuthContext';
 import { AnimatePresence, motion } from 'framer-motion';
+import { API_BASE_URL } from '../../config/api';
 
 const Help = () => {
   const { currentUser, dbUser } = useAuth();
@@ -43,7 +44,7 @@ const Help = () => {
 
     try {
       const token = await currentUser.getIdToken();
-      const res = await fetch('\/api/support', {
+      const res = await fetch(`${API_BASE_URL}/api/support`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

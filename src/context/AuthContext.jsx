@@ -12,6 +12,7 @@ import {
   updatePassword
 } from 'firebase/auth';
 import { auth } from '../firebase/config';
+import { API_BASE_URL } from '../config/api';
 
 const AuthContext = createContext();
 
@@ -78,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         try {
           const token = await user.getIdToken();
-          const res = await fetch('\/api/users/sync', {
+          const res = await fetch(`${API_BASE_URL}/api/users/sync`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

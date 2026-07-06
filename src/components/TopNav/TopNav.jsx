@@ -5,6 +5,7 @@ import Dropdown from '../Dropdown/Dropdown';
 import { useNavigate, Link } from 'react-router-dom';
 import styles from './TopNav.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
+import { API_BASE_URL } from '../../config/api';
 
 const TopNav = () => {
   const { currentUser, dbUser, logout } = useAuth();
@@ -28,7 +29,7 @@ const TopNav = () => {
       if (!currentUser) return;
       try {
         const token = await currentUser.getIdToken();
-        const res = await fetch('\/api/notifications', {
+        const res = await fetch(`${API_BASE_URL}/api/notifications`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -54,7 +55,7 @@ const TopNav = () => {
       setIsSearching(true);
       try {
         const token = await currentUser.getIdToken();
-        const res = await fetch(`\/api/search?q=${encodeURIComponent(searchQuery)}`, {
+        const res = await fetch(`${API_BASE_URL}/api/search?q=${encodeURIComponent(searchQuery)}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -98,7 +99,7 @@ const TopNav = () => {
   const markAsRead = async (id) => {
     try {
       const token = await currentUser.getIdToken();
-      await fetch(`\/api/notifications/${id}/read`, {
+      await fetch(`${API_BASE_URL}/api/notifications/${id}/read`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -111,7 +112,7 @@ const TopNav = () => {
   const markAllRead = async () => {
     try {
       const token = await currentUser.getIdToken();
-      await fetch(`\/api/notifications/read-all`, {
+      await fetch(`${API_BASE_URL}/api/notifications/read-all`, {
         method: 'PUT',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -124,7 +125,7 @@ const TopNav = () => {
   const clearAllNotifications = async () => {
     try {
       const token = await currentUser.getIdToken();
-      await fetch(`\/api/notifications/clear`, {
+      await fetch(`${API_BASE_URL}/api/notifications/clear`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });

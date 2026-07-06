@@ -21,6 +21,7 @@ import Button from '../../components/Button/Button';
 import RateLimitErrorCard from '../../components/RateLimitErrorCard/RateLimitErrorCard';
 import { useAuth } from '../../context/AuthContext';
 import styles from './AutomationHub.module.css';
+import { API_BASE_URL } from '../../config/api';
 
 const AutomationHub = () => {
   const { currentUser } = useAuth();
@@ -66,7 +67,7 @@ const AutomationHub = () => {
         return; // Notes doesn't have an explicit save model yet in the dummy implementation besides Activity
       }
       
-      const res = await fetch(`\${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -89,7 +90,7 @@ const AutomationHub = () => {
       else if (activeTool === 'workflow') endpoint = `/api/automations/workflows/${id}`;
       else if (activeTool === 'tasks') endpoint = `/api/automations/tasks/${id}`;
       
-      const res = await fetch(`\${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -163,7 +164,7 @@ const AutomationHub = () => {
     setLoading(true);
     try {
       const token = await currentUser.getIdToken();
-      const res = await fetch('\/api/automations/workflow', {
+      const res = await fetch(`${API_BASE_URL}/api/automations/workflow`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -199,7 +200,7 @@ const AutomationHub = () => {
     setLoading(true); setError(''); setRateLimitError(false); setResult(null);
     try {
       const headers = await getHeaders();
-      const res = await fetch('\/api/automations/email', {
+      const res = await fetch(`${API_BASE_URL}/api/automations/email`, {
         method: 'POST',
         headers,
         body: JSON.stringify(emailData)
@@ -224,7 +225,7 @@ const AutomationHub = () => {
     setLoading(true); setError(''); setRateLimitError(false); setResult(null);
     try {
       const headers = await getHeaders();
-      const res = await fetch('\/api/automations/meeting-notes', {
+      const res = await fetch(`${API_BASE_URL}/api/automations/meeting-notes`, {
         method: 'POST',
         headers,
         body: JSON.stringify(notesData)
@@ -249,7 +250,7 @@ const AutomationHub = () => {
     setLoading(true); setError(''); setRateLimitError(false); setResult(null); setSaved(false);
     try {
       const headers = await getHeaders();
-      const res = await fetch('\/api/automations/tasks', {
+      const res = await fetch(`${API_BASE_URL}/api/automations/tasks`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ 
@@ -278,7 +279,7 @@ const AutomationHub = () => {
     setLoading(true); setError(''); setRateLimitError(false); setResult(null); setSaved(false);
     try {
       const headers = await getHeaders();
-      const res = await fetch('\/api/automations/workflow', {
+      const res = await fetch(`${API_BASE_URL}/api/automations/workflow`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ 

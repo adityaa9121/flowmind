@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Zap, Brain, Clock, Mail, FileText, MessageSqu
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import styles from './Landing.module.css';
+import { API_BASE_URL } from '../../config/api';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -79,7 +80,7 @@ const Landing = () => {
     setContactLoading(true);
     setContactStatus({ type: '', message: '' });
     try {
-      const res = await fetch('\/api/support', {
+      const res = await fetch(`${API_BASE_URL}/api/support`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -4,6 +4,7 @@ import Button from '../../components/Button/Button';
 import RateLimitErrorCard from '../../components/RateLimitErrorCard/RateLimitErrorCard';
 import { useAuth } from '../../context/AuthContext';
 import styles from './DocumentAnalyzer.module.css';
+import { API_BASE_URL } from '../../config/api';
 
 const DocumentAnalyzer = () => {
   const { currentUser } = useAuth();
@@ -38,7 +39,7 @@ const DocumentAnalyzer = () => {
     if (!currentUser) return;
     try {
       const token = await currentUser.getIdToken();
-      const res = await fetch(`\/api/documents/user/${currentUser.uid}`, {
+      const res = await fetch(`${API_BASE_URL}/api/documents/user/${currentUser.uid}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -118,7 +119,7 @@ const DocumentAnalyzer = () => {
 
     try {
       const headers = await getHeaders(true);
-      const res = await fetch('\/api/documents/upload', {
+      const res = await fetch(`${API_BASE_URL}/api/documents/upload`, {
         method: 'POST',
         headers,
         body: formData
@@ -149,7 +150,7 @@ const DocumentAnalyzer = () => {
     if (!window.confirm('Delete this document?')) return;
     try {
       const headers = await getHeaders(false);
-      const res = await fetch(`\/api/documents/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/documents/${id}`, {
         method: 'DELETE',
         headers
       });
@@ -173,7 +174,7 @@ const DocumentAnalyzer = () => {
     }
     try {
       const headers = await getHeaders(false);
-      const res = await fetch(`\/api/documents/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/documents/${id}`, {
         method: 'PUT',
         headers,
         body: JSON.stringify({ title: editTitle })
@@ -251,7 +252,7 @@ ${doc.actionItems?.map(a => `- ${a}`).join('\n') || 'None'}
       If the answer is not in the document, say you don't know based on the provided text.`;
 
       const headers = await getHeaders(false);
-      const res = await fetch('\/api/automations/document-chat', {
+      const res = await fetch(`${API_BASE_URL}/api/automations/document-chat`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

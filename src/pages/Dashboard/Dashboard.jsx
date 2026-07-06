@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './DashboardPages.module.css';
 import { useAuth } from '../../context/AuthContext';
+import { API_BASE_URL } from '../../config/api';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -44,12 +45,12 @@ const Dashboard = () => {
         };
 
         const [statsRes, activityRes, chatsRes, docsRes, workflowsRes, emailsRes] = await Promise.all([
-          fetch('\/api/users/stats', { headers }),
-          fetch(`\/api/activities/user/${currentUser.uid}`, { headers }),
-          fetch(`\/api/chats/user/${currentUser.uid}`, { headers }),
-          fetch(`\/api/documents/user/${currentUser.uid}`, { headers }),
-          fetch('\/api/automations/workflows', { headers }),
-          fetch('\/api/automations/emails', { headers })
+          fetch(`${API_BASE_URL}/api/users/stats`, { headers }),
+          fetch(`${API_BASE_URL}/api/activities/user/${currentUser.uid}`, { headers }),
+          fetch(`${API_BASE_URL}/api/chats/user/${currentUser.uid}`, { headers }),
+          fetch(`${API_BASE_URL}/api/documents/user/${currentUser.uid}`, { headers }),
+          fetch(`${API_BASE_URL}/api/automations/workflows`, { headers }),
+          fetch(`${API_BASE_URL}/api/automations/emails`, { headers })
         ]);
 
         if (statsRes.ok) setStats(await statsRes.json());

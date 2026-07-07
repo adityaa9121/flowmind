@@ -6,9 +6,10 @@ const connectDB = async () => {
     // Force Node.js to use Google/Cloudflare public DNS to bypass broken IPv6 resolvers
     dns.setServers(['8.8.8.8', '1.1.1.1']);
 
-    const uri = process.env.MONGODB_URI;
-    if (!uri) {
-      throw new Error("MONGODB_URI environment variable is not defined");
+    const mongoURI = process.env.MONGODB_URI;
+    if (!mongoURI) {
+      console.error('\n[FATAL ERROR] MONGODB_URI environment variable is missing.');
+      process.exit(1);
     }
 
     // Disable Mongoose buffering globally to fail-fast if disconnected
@@ -36,7 +37,7 @@ const connectDB = async () => {
     });
 
     // Wait for the connection to establish. If it fails, it will immediately throw.
-    await mongoose.connect(uri);
+    await mongoose.connect(mongoURI);
     
   } catch (error) {
     console.error('\n======================================================');

@@ -2,7 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const connectDB = require('./utils/db');
 
 const app = express();
@@ -72,12 +74,13 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     // 1. Validate Environment Variables
-    if (!process.env.MONGODB_URI) {
-      console.error('\n[FATAL ERROR] MONGODB_URI is missing from .env file.');
+    const mongoURI = process.env.MONGODB_URI;
+    if (!mongoURI) {
+      console.error('\n[FATAL ERROR] MONGODB_URI environment variable is missing.');
       process.exit(1);
     }
     
-    if (!process.env.MONGODB_URI.startsWith('mongodb://') && !process.env.MONGODB_URI.startsWith('mongodb+srv://')) {
+    if (!mongoURI.startsWith('mongodb://') && !mongoURI.startsWith('mongodb+srv://')) {
       console.error('\n[FATAL ERROR] MONGODB_URI format is invalid. It must start with mongodb:// or mongodb+srv://');
       process.exit(1);
     }

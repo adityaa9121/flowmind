@@ -1,15 +1,32 @@
-const { initializeApp, getApps } = require('firebase-admin/app');
+const { initializeApp, getApps, cert } = require('firebase-admin/app');
 const { getAuth } = require('firebase-admin/auth');
 
 // Initialize Firebase Admin safely
 try {
   if (!getApps().length) {
-    initializeApp({
-      projectId: process.env.VITE_FIREBASE_PROJECT_ID || 'flowmindai-22ae9'
-    });
+    const projectId = process.env.FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID || 'flowmindai-22ae9';
+    const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+    let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+
+    if (privateKey && clientEmail) {
+      privateKey = privateKey.replace(/\\n/g, '\n');
+      initializeApp({
+        credential: cert({
+          projectId,
+          clientEmail,
+          privateKey
+        })
+      });
+      console.log('Firebase Admin initialized successfully using service account certificate.');
+    } else {
+      initializeApp({
+        projectId
+      });
+      console.log('Firebase Admin initialized using project ID fallback.');
+    }
   }
 } catch (error) {
-  console.log('Firebase admin initialization failed or missing credentials. Authentication middleware might fail if tokens cannot be verified.', error.message);
+  console.error('Firebase admin initialization failed:', error.message);
 }
 
 const verifyToken = async (req, res, next) => {

@@ -20,13 +20,22 @@ const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = [
       'https://flowmindai-22ae9.web.app',
+      'https://flowmindai-22ae9.firebaseapp.com',
       'http://localhost:5173',
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'http://127.0.0.1:5173',
+      'http://127.0.0.1:3000'
     ];
-    if (!origin || allowedOrigins.indexOf(origin) !== -1 || origin === process.env.FRONTEND_URL) {
+    if (process.env.FRONTEND_URL) {
+      allowedOrigins.push(process.env.FRONTEND_URL);
+    }
+
+    const normalizedOrigin = origin ? origin.replace(/\/$/, '') : '';
+
+    if (!origin || allowedOrigins.indexOf(normalizedOrigin) !== -1 || normalizedOrigin.endsWith('.web.app') || normalizedOrigin.endsWith('.firebaseapp.com')) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(null, false);
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

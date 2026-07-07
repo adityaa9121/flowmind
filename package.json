@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview",
-    "start": "cd server && npm install && node index.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "firebase": "^12.15.0",

@@ -12,7 +12,10 @@ const app = express();
 // Startup Validation moved to startServer()
 
 // Middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false,
+  crossOriginEmbedderPolicy: false
+}));
 const corsOptions = {
   origin: (origin, callback) => {
     const allowedOrigins = [

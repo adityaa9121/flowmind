@@ -47,7 +47,7 @@ const Dashboard = () => {
         const [statsRes, activityRes, chatsRes, docsRes, workflowsRes, emailsRes] = await Promise.all([
           fetch(`${API_BASE_URL}/api/users/stats`, { headers }),
           fetch(`${API_BASE_URL}/api/activities/user/${currentUser.uid}`, { headers }),
-          fetch(`${API_BASE_URL}/api/chats/user/${currentUser.uid}`, { headers }),
+          fetch(`${API_BASE_URL}/api/chat`, { headers }),
           fetch(`${API_BASE_URL}/api/documents/user/${currentUser.uid}`, { headers }),
           fetch(`${API_BASE_URL}/api/automations/workflows`, { headers }),
           fetch(`${API_BASE_URL}/api/automations/emails`, { headers })
